@@ -161,6 +161,7 @@ class CitusDefaultClusterConfig(CitusBaseClusterConfig):
         new_settings = {
             "client_min_messages": "WARNING",
             "citus.sort_returning": True,
+            "citus.use_citus_managed_tables": True,
         }
         self.settings.update(new_settings)
         self.add_coordinator_to_metadata = True
@@ -293,11 +294,19 @@ class CitusUnusualQuerySettingsConfig(CitusMXBaseClusterConfig):
         self.new_settings = {
             "citus.task_assignment_policy": "first-replica",
             "citus.enable_fast_path_router_planner": False,
-            "citus.enable_local_execution": False,
             "citus.enable_single_hash_repartition_joins": True,
             "citus.recover_2pc_interval": "1s",
             "citus.remote_task_check_interval": "1ms",
             "citus.values_materialization_threshold": "0",
+        }
+
+
+class CitusUnusualQuerySettingsNoLocalExecConfig(CitusUnusualQuerySettingsConfig):
+    def __init__(self, arguments):
+        super().__init__(arguments)
+        self.new_settings = {
+            "citus.use_citus_managed_tables": False,
+            "citus.enable_local_execution": False,
         }
 
 
