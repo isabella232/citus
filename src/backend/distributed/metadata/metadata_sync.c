@@ -362,6 +362,7 @@ stop_metadata_sync_to_node(PG_FUNCTION_ARGS)
 								  BREAK_CITUS_TABLE_SEQUENCE_DEPENDENCY_COMMAND);
 			commandList = lappend(commandList, REMOVE_ALL_SHELL_TABLES_COMMAND);
 			commandList = list_concat(commandList, NodeMetadataDropCommands());
+			commandList = lappend(commandList, LocalGroupIdUpdateCommand(0));
 
 			/* remove all dist table and object related metadata first */
 			commandList = lappend(commandList,
