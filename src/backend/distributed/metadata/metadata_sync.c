@@ -162,7 +162,18 @@ start_metadata_sync_to_node(PG_FUNCTION_ARGS)
 
 	char *nodeNameString = text_to_cstring(nodeName);
 
-	SyncNodeMetadataToNode(nodeNameString, nodePort);
+	/* TODO: make ReplicateReferenceTablesOnActivate setLocal */
+	bool oldVal = ReplicateReferenceTablesOnActivate;
+
+	set_config_option("citus.replicate_reference_tables_on_activaten", "off",
+					  (superuser() ? PGC_SUSET : PGC_USERSET), PGC_S_SESSION,
+					  GUC_ACTION_LOCAL, true, 0, false);
+
+	ActivateNode(nodeNameString, nodePort);
+
+	set_config_option("citus.replicate_reference_tables_on_activaten", oldVal ? "true" : "off",
+					  (superuser() ? PGC_SUSET : PGC_USERSET), PGC_S_SESSION,
+					  GUC_ACTION_LOCAL, true, 0, false);
 
 	PG_RETURN_VOID();
 }
