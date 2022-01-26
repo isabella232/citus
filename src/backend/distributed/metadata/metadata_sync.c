@@ -164,13 +164,13 @@ start_metadata_sync_to_node(PG_FUNCTION_ARGS)
 	/* TODO: make ReplicateReferenceTablesOnActivate setLocal */
 	bool oldVal = ReplicateReferenceTablesOnActivate;
 
-	set_config_option("citus.replicate_reference_tables_on_activaten", "off",
+	set_config_option("citus.replicate_reference_tables_on_activate", "off",
 					  (superuser() ? PGC_SUSET : PGC_USERSET), PGC_S_SESSION,
 					  GUC_ACTION_LOCAL, true, 0, false);
 
 	ActivateNode(nodeNameString, nodePort);
 
-	set_config_option("citus.replicate_reference_tables_on_activaten", oldVal ? "true" :
+	set_config_option("citus.replicate_reference_tables_on_activate", oldVal ? "true" :
 					  "off",
 					  (superuser() ? PGC_SUSET : PGC_USERSET), PGC_S_SESSION,
 					  GUC_ACTION_LOCAL, true, 0, false);
