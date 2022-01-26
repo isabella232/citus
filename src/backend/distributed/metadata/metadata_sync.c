@@ -92,7 +92,6 @@ static bool HasMetadataWorkers(void);
 static bool ShouldSyncTableMetadataInternal(bool hashDistributed,
 											bool citusTableWithNoDistKey);
 static bool SyncNodeMetadataSnapshotToNode(WorkerNode *workerNode, bool raiseOnError);
-static void DropMetadataSnapshotOnNode(WorkerNode *workerNode);
 static char * CreateSequenceDependencyCommand(Oid relationId, Oid sequenceId,
 											  char *columnName);
 static GrantStmt * GenerateGrantStmtForRights(ObjectType objectType,
@@ -171,7 +170,8 @@ start_metadata_sync_to_node(PG_FUNCTION_ARGS)
 
 	ActivateNode(nodeNameString, nodePort);
 
-	set_config_option("citus.replicate_reference_tables_on_activaten", oldVal ? "true" : "off",
+	set_config_option("citus.replicate_reference_tables_on_activaten", oldVal ? "true" :
+					  "off",
 					  (superuser() ? PGC_SUSET : PGC_USERSET), PGC_S_SESSION,
 					  GUC_ACTION_LOCAL, true, 0, false);
 
@@ -352,7 +352,33 @@ stop_metadata_sync_to_node(PG_FUNCTION_ARGS)
 		{
 			ereport(NOTICE, (errmsg("dropping metadata on the node (%s,%d)",
 									nodeNameString, nodePort)));
-			DropMetadataSnapshotOnNode(workerNode);
+
+			/*
+			 * Detach partitions, break dependencies between sequences and table then
+			 * remove shell tables first.
+			 */
+			List *commandList = DetachPartitionCommandList();
+			commandList = lappend(commandList,
+								  BREAK_CITUS_TABLE_SEQUENCE_DEPENDENCY_COMMAND);
+			commandList = lappend(commandList, REMOVE_ALL_SHELL_TABLES_COMMAND);
+			commandList = list_concat(commandList, NodeMetadataDropCommands());
+
+			/* remove all dist table and object related metadata first */
+			commandList = lappend(commandList,
+								  DELETE_ALL_PARTITIONS);
+			commandList = lappend(commandList, DELETE_ALL_SHARDS);
+			commandList = lappend(commandList,
+								  DELETE_ALL_PLACEMENTS);
+			commandList = lappend(commandList,
+								  DELETE_ALL_DISTRIBUTED_OBJECTS);
+
+
+			EnsureSequentialModeMetadataOperations();
+			SendOptionalMetadataCommandListToWorkerInCoordinatedTransaction(
+				workerNode->workerName,
+				workerNode->workerPort,
+				CurrentUserName(),
+				commandList);
 		}
 		else
 		{
@@ -513,31 +539,6 @@ SyncNodeMetadataSnapshotToNode(WorkerNode *workerNode, bool raiseOnError)
 
 		return success;
 	}
-}
-
-
-/*
- * DropMetadataSnapshotOnNode creates the queries which drop the metadata and sends them
- * to the worker given as parameter.
- */
-static void
-DropMetadataSnapshotOnNode(WorkerNode *workerNode)
-{
-	EnsureSequentialModeMetadataOperations();
-
-	char *userName = CurrentUserName();
-
-	/* generate the queries which drop the metadata */
-	List *dropMetadataCommandList = NodeMetadataDropCommands();
-
-	dropMetadataCommandList = lappend(dropMetadataCommandList,
-									  LocalGroupIdUpdateCommand(0));
-
-	SendOptionalMetadataCommandListToWorkerInCoordinatedTransaction(
-		workerNode->workerName,
-		workerNode->workerPort,
-		userName,
-		dropMetadataCommandList);
 }
 
 
