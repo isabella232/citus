@@ -25,14 +25,21 @@ BEGIN
   -- script is running via acquiring a strong lock on the pg_dist_node
 ------------------------------------------------------------------------------------------
 BEGIN
-
   LOCK TABLE pg_dist_node IN EXCLUSIVE MODE NOWAIT;
 
   EXCEPTION WHEN OTHERS THEN
   RAISE 'Another node metadata changing operation is in progress, try again.';
 END;
+
 ------------------------------------------------------------------------------------------
-  -- STAGE 1: Ensure we have the prerequisites
+  -- STAGE 1: We want all the commands to run in the same transaction block. Without
+  -- sequential mode, metadata syncing cannot be done in a transaction block along with
+  -- other commands
+------------------------------------------------------------------------------------------
+  SET LOCAL citus.multi_shard_modify_mode TO 'sequential';
+
+------------------------------------------------------------------------------------------
+  -- STAGE 2: Ensure we have the prerequisites
   -- (a) only superuser can run this script
   -- (b) cannot be executed when enable_ddl_propagation is False
   -- (c) can only be executed from the coordinator
@@ -63,7 +70,7 @@ END;
 
 
   ------------------------------------------------------------------------------------------
-    -- STAGE 2: Ensure all primary nodes are active
+    -- STAGE 3: Ensure all primary nodes are active
   ------------------------------------------------------------------------------------------
   DECLARE
     primary_disabled_worker_node_count int := 0;
@@ -80,7 +87,7 @@ END;
   END;
 
   ------------------------------------------------------------------------------------------
-    -- STAGE 3: Ensure there is no connectivity issues in the cluster
+    -- STAGE 4: Ensure there is no connectivity issues in the cluster
   ------------------------------------------------------------------------------------------
   DECLARE
     all_nodes_can_connect_to_each_other boolean := False;
@@ -98,7 +105,7 @@ END;
   END;
 
   ------------------------------------------------------------------------------------------
-    -- STAGE 4: Ensure all the partitioned tables have the proper naming structure
+    -- STAGE 5: Ensure all the partitioned tables have the proper naming structure
     -- As described on https://github.com/citusdata/citus/issues/4962
     -- existing indexes on partitioned distributed tables can collide
     -- with the index names exists on the shards
@@ -134,7 +141,7 @@ END;
   END;
 
   ------------------------------------------------------------------------------------------
-  -- STAGE 5: Return early if there are no primary worker nodes
+  -- STAGE 6: Return early if there are no primary worker nodes
   -- We don't strictly need this step, but it gives a nicer notice message
   ------------------------------------------------------------------------------------------
   DECLARE
@@ -151,7 +158,7 @@ END;
   END;
 
   ------------------------------------------------------------------------------------------
-  -- STAGE 6: Do the actual metadata & object syncing to the worker nodes
+  -- STAGE 7: Do the actual metadata & object syncing to the worker nodes
   -- For the "already synced" metadata nodes, we do not strictly need to
   -- sync the objects & metadata, but there is no harm to do it anyway
   -- it'll only cost some execution time but makes sure that we have a
@@ -165,7 +172,7 @@ END;
 
     PERFORM start_metadata_sync_to_node(nodename,nodeport)
     FROM
-      pg_dist_node WHERE NOT hasmetadata AND groupid != 0 AND noderole = 'primary';
+      pg_dist_node WHERE groupid != 0 AND noderole = 'primary';
   END;
 
   RETURN true;
