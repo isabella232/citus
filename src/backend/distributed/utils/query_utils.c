@@ -56,21 +56,12 @@ ExtractRangeTableList(Node *node, ExtractRangeTableWalkerContext *context)
 	{
 		Query *query = (Query *) node;
 
-		if (query->hasSubLinks || query->cteList || query->setOperations)
 		{
 			/* descend into all parts of the query */
 			walkIsComplete = query_tree_walker(query,
 											   ExtractRangeTableList,
 											   context,
 											   QTW_EXAMINE_RTES_BEFORE);
-		}
-		else
-		{
-			/* descend only into RTEs */
-			walkIsComplete = range_table_walker(query->rtable,
-												ExtractRangeTableList,
-												context,
-												QTW_EXAMINE_RTES_BEFORE);
 		}
 	}
 	else
