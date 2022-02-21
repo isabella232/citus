@@ -844,6 +844,16 @@ DeferredErrorIfUnsupportedRecurringTuplesJoin(
 				break;
 			}
 		}
+		else if (joinType == JOIN_INNER && plannerInfo->hasLateralRTEs)
+		{
+			if (RelationInfoContainsOnlyRecurringTuples(plannerInfo, innerrelRelids) &&
+				!RelationInfoContainsOnlyRecurringTuples(plannerInfo, outerrelRelids))
+			{
+				recurType = FetchFirstRecurType(plannerInfo, innerrelRelids);
+
+				break;
+			}
+		}
 	}
 
 	if (recurType == RECURRING_TUPLES_REFERENCE_TABLE)
