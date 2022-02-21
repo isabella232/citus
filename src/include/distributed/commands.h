@@ -65,6 +65,8 @@ typedef struct DistributeObjectOps
 #define CITUS_TRUNCATE_TRIGGER_NAME "citus_truncate_trigger"
 
 const DistributeObjectOps * GetDistributeObjectOps(Node *node);
+bool IsNoDistributeOps(const DistributeObjectOps *op);
+
 
 /*
  * Flags that can be passed to GetForeignKeyOids to indicate

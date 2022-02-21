@@ -749,6 +749,14 @@ static DistributeObjectOps Trigger_Rename = {
 };
 
 
+
+bool
+IsNoDistributeOps(const DistributeObjectOps *op)
+{
+	DistributeObjectOps noDistributeOps = NoDistributeOps;
+	return memcmp(op, &noDistributeOps, sizeof(DistributeObjectOps)) == 0;
+}
+
 /*
  * GetDistributeObjectOps looks up the DistributeObjectOps which handles the node.
  *
