@@ -298,14 +298,7 @@ class CitusUnusualQuerySettingsConfig(CitusMXBaseClusterConfig):
             "citus.recover_2pc_interval": "1s",
             "citus.remote_task_check_interval": "1ms",
             "citus.values_materialization_threshold": "0",
-        }
-
-
-class CitusUnusualQuerySettingsNoLocalExecConfig(CitusUnusualQuerySettingsConfig):
-    def __init__(self, arguments):
-        super().__init__(arguments)
-        self.new_settings = {
-            "citus.use_citus_managed_tables": False,
+			"citus.use_citus_managed_tables": False,
             "citus.enable_local_execution": False,
         }
 
