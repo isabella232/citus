@@ -524,18 +524,6 @@ ProcessUtilityInternal(PlannedStmt *pstmt,
 		parsetree = pstmt->utilityStmt;
 		ops = GetDistributeObjectOps(parsetree);
 
-		if (ops && !IsNoDistributeOps(ops))
-		{
-			/*
-			 * For any object operation, get a lock that conflicts with
-			 * ExlusiveLock taken by citus_add/remove/update_node. With
-			 * that, we can gurantee node metadata changing operations are
-			 * always serialized with object/metadata changes.
-			 */
-
-			LockRelationOid(DistNodeRelationId(), RowShareLock);
-		}
-
 		if (ops && ops->preprocess)
 		{
 			ddlJobs = ops->preprocess(parsetree, queryString, context);
@@ -721,6 +709,8 @@ ProcessUtilityInternal(PlannedStmt *pstmt,
 	/* after local command has completed, finish by executing worker DDLJobs, if any */
 	if (ddlJobs != NIL)
 	{
+		LockRelationOid(DistNodeRelationId(), RowShareLock);
+
 		if (IsA(parsetree, AlterTableStmt))
 		{
 			PostprocessAlterTableStmt(castNode(AlterTableStmt, parsetree));
