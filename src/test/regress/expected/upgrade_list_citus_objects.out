@@ -186,6 +186,7 @@ ORDER BY 1;
  function replicate_reference_tables()
  function replicate_table_shards(regclass,integer,integer,bigint[],citus.shard_transfer_mode)
  function role_exists(name)
+ function run_command_on_all_nodes(text,boolean)
  function run_command_on_colocated_placements(regclass,regclass,text,boolean)
  function run_command_on_placements(regclass,text,boolean)
  function run_command_on_shards(regclass,text,boolean)
@@ -261,6 +262,7 @@ ORDER BY 1;
  type citus.distribution_type
  type citus.shard_transfer_mode
  type citus_copy_format
+ type citus_stat_activity_one_node
  type noderole
  view citus_dist_stat_activity
  view citus_lock_waits
@@ -268,9 +270,10 @@ ORDER BY 1;
  view citus_shard_indexes_on_worker
  view citus_shards
  view citus_shards_on_worker
+ view citus_stat_activity
  view citus_stat_statements
  view citus_worker_stat_activity
  view pg_dist_shard_placement
  view time_partitions
-(256 rows)
+(259 rows)
 
