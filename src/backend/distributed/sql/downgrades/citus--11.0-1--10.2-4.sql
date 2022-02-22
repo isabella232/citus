@@ -94,7 +94,7 @@ ALTER TABLE citus.pg_dist_object DROP COLUMN force_delegation;
 SET search_path = 'pg_catalog';
 
 
-DROP FUNCTION IF EXISTS get_all_active_transactions();
+DROP FUNCTION IF EXISTS get_all_active_transactions() CASCADE;
 
 
 CREATE OR REPLACE FUNCTION get_all_active_transactions(OUT datid oid, OUT process_id int, OUT initiator_node_identifier int4, OUT worker_query BOOL,
@@ -107,7 +107,7 @@ COMMENT ON FUNCTION get_all_active_transactions(OUT datid oid, OUT datname text,
                                                 OUT transaction_number int8, OUT transaction_stamp timestamptz)
 IS 'returns distributed transaction ids of active distributed transactions';
 
-DROP FUNCTION IF EXISTS get_global_active_transactions();
+DROP FUNCTION IF EXISTS get_global_active_transactions() CASCADE;
 
 CREATE FUNCTION get_global_active_transactions(OUT datid oid, OUT process_id int, OUT initiator_node_identifier int4, OUT worker_query BOOL, OUT transaction_number int8, OUT transaction_stamp timestamptz)
   RETURNS SETOF RECORD
@@ -348,3 +348,7 @@ ALTER VIEW citus.citus_lock_waits SET SCHEMA pg_catalog;
 GRANT SELECT ON pg_catalog.citus_lock_waits TO PUBLIC;
 
 RESET search_path;
+
+DROP VIEW IF EXISTS pg_catalog.citus_stat_activity CASCADE;
+DROP TYPE IF EXISTS pg_catalog.citus_stat_activity_one_node CASCADE;
+DROP FUNCTION IF EXISTS pg_catalog.run_command_on_all_nodes CASCADE;
