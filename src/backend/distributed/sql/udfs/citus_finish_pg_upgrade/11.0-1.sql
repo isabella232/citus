@@ -138,19 +138,19 @@ BEGIN
 
     DROP TABLE public.pg_dist_object;
 
-    CREATE OR REPLACE VIEW citus.citus_stat_activity AS
-    SELECT all_csa_1n.global_pid, nodeid, all_csa_1n.worker_query, (all_csa_1n.pg_stat_activity).*
-    FROM (
-        SELECT * FROM run_command_on_all_nodes($$
-            SELECT coalesce(to_json(array_agg(csa_1n.*)), '[{}]'::JSON)
-            FROM (
-                SELECT global_pid, worker_query, (pg_stat_activity.*)::pg_stat_activity FROM
-                pg_stat_activity LEFT JOIN get_all_active_transactions() ON process_id = pid
-            ) AS csa_1n;
-        $$)
-        WHERE success = 't'
-    ) AS run_command_on_all_nodes
-    LEFT JOIN LATERAL json_populate_recordset(NULL::citus_stat_activity_one_node, run_command_on_all_nodes.result::JSON) as all_csa_1n ON TRUE;
+--    CREATE OR REPLACE VIEW citus.citus_stat_activity AS
+--    SELECT all_csa_1n.global_pid, nodeid, all_csa_1n.worker_query, (all_csa_1n.pg_stat_activity).*
+--    FROM (
+--        SELECT * FROM run_command_on_all_nodes($$
+--            SELECT coalesce(to_json(array_agg(csa_1n.*)), '[{}]'::JSON)
+--            FROM (
+--                SELECT global_pid, worker_query, (pg_stat_activity.*)::pg_stat_activity FROM
+--                pg_stat_activity LEFT JOIN get_all_active_transactions() ON process_id = pid
+--            ) AS csa_1n;
+--        $$)
+--        WHERE success = 't'
+--    ) AS run_command_on_all_nodes
+--    LEFT JOIN LATERAL json_populate_recordset(NULL::citus_stat_activity_one_node, run_command_on_all_nodes.result::JSON) as all_csa_1n ON TRUE;
 END;
 $cppu$;
 
