@@ -384,9 +384,6 @@ StoreAllActiveTransactions(Tuplestorestate *tupleStore, TupleDesc tupleDescripto
 		 * Unless the user has a role that allows seeing all transactions (superuser,
 		 * pg_monitor), we only allow the owner to see all the details.
 		 */
-		elog(INFO, "currentBackend->userId: %d", currentBackend->userId);
-		elog(INFO, "curretUserId: %d", userId);
-
 		if (currentBackend->userId == userId)
 		{
 			showCurrentBackendDetails = true;
