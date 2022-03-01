@@ -82,6 +82,6 @@ END;
 $$;
 
 #include "udfs/run_command_on_all_nodes/11.0-1.sql"
-
 #include "udfs/citus_stat_activity/11.0-1.sql"
-
+#include "udfs/citus_prepare_pg_upgrade/11.0-1.sql"
+#include "udfs/citus_finish_pg_upgrade/11.0-1.sql"
