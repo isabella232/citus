@@ -38,6 +38,8 @@
 
 * Adds propagation of `CREATE AGGREGATE` commands
 
+* Add support for `ALTER FUNCTION ... SUPPORT ...` commands
+
 * Adds support for `CREATE SCHEMA AUTHORIZATION` statements without schema name
 
 * Adds support for `TRUNCATE` for foreign tables
