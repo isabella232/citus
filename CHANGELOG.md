@@ -1,12 +1,28 @@
 ### citus v11.0.0 (March 22, 2022) ###
 
+* Turns MX on by default
+
+* Adds `citus_finalize_upgrade_to_citus11()` which is necessary to upgrade Citus 11+ from earlier versions
+
+* Distributes functions with `CREATE FUNCTION` command
+
 * `citus_shard_indexes_on_worker` shows all local shard indexes regardless of `search_path`
 
 * `citus_shards_on_worker` shows all local shards regardless of `search_path`
 
-* Adds `citus_finalize_upgrade_to_citus11()` which is necessary to upgrade Citus 11+ from earlier versions
-
 * Adds `citus.create_object_propagation` GUC to control ddl creation behaviour in transactions
+
+* Sets `create_object_propagation` default to `immediate`
+
+* Uses a fixed `application_name` while connecting to remote nodes
+
+* Hides shards based on `application_name` prefix
+
+* Prevents `citus.node_conninfo` to use `application_name`
+
+* Starts identifying rebalancer backends by `application_name=citus_rebalancer`
+
+* Starts internal backends by `application_name=citus_internal`
 
 * Adds `citus.enable_unsafe_triggers` flag to propagate triggers on distributed tables
 
@@ -14,15 +30,13 @@
 
 * Adds `fix_partition_shard_index_names` udf to fix currently broken names
 
-* Adds missing version checks for columnar tables
-
-* Adds missing version checks for internal function
-
-* Adds propagation for foreign server command
+* Adds propagation for foreign server commands
 
 * Adds propagation of `CREATE AGGREGATE` commands
 
-* Adds Stackoverflow badge into `README.md`
+* Adds support for `CREATE SCHEMA AUTHORIZATION` statements without schema name
+
+* Adds support for `TRUNCATE` for foreign tables
 
 * Adds support for adding partitioned local table to Citus metadata
 
@@ -31,8 +45,6 @@
 * Adds support for foreign tables in MX
 
 * Adds support for operator class parameters in indexes
-
-* Adds Twitter, Packagecloud and CircleCI badges
 
 * Allows `create_distributed_function()` on a function owned by an extension
 
@@ -53,8 +65,6 @@
 * Disables distributed & reference foreign tables
 
 * Disallows remote execution from queries on shards
-
-* Distributes functions with `CREATE FUNCTION` command
 
 * Drops `citus_worker_stat_activity`
 
@@ -122,11 +132,9 @@
 
 * Fixes the extra comma bug in `ShardListInsertCommand`
 
-* Hides shards based on `application_name` prefix
-
 * Implements `TEXT SEARCH CONFIGURATION` propagation
 
-* Implements TEXT SEARCH DICTIONARY propagation
+* Implements `TEXT SEARCH DICTIONARY` propagation
 
 * Improves concurrent metadata syncing and metadata changing DDL operations
 
@@ -156,8 +164,6 @@
 
 * Partitions shards to be co-located with the parent shards
 
-* Prevents `citus.node_conninfo` to use `application_name`
-
 * Prevents Citus table functions from being called on shards
 
 * Prevents creating distributed functions when there are out of sync nodes
@@ -175,8 +181,6 @@
 * Provides notice message for idempotent `create_distributed_function` calls
 
 * Pushes down procedures with OUT arguments to the worker nodes
-
-* Qualifies `CREATE AGGREGATE` stmts in `Preprocess`, adds `PreprocessDefineAggregateStmt`
 
 * Refactor `GenerateGrantOnSchemaStmtForRights` to a more generic form
 
@@ -206,27 +210,25 @@
 
 * Revokes read access to `columnar.chunk` from unprivileged user
 
-* Sets `create_object_propagation` default to `immediate`
-
 * Starts erroring out for unsupported lateral subqueries
-
-* Starts identifying rebalancer backends by `application_name=citus_rebalancer`
-
-* Starts internal backends by `application_name=citus_internal`
 
 * Stops updating shard range in `citus_update_shard_statistics` for append tables
 
-* Supports `CREATE SCHEMA AUTHORIZATION` statements without schema name
-
-* Supports `TRUNCATE` for foreign tables
-
 * Synchronizes `pg_dist_colocation` to worker nodes
-
-* Turns MX on by default
 
 * Uses `smgrextend()` when extending relation, and WAL-log first
 
-* Uses a fixed `application_name` while connecting to remote nodes
+--------- I plan to delete all the entries below --------------
+
+* Adds missing version checks for columnar tables
+
+* Adds missing version checks for internal function
+
+* Qualifies `CREATE AGGREGATE` stmts in `Preprocess`, adds `PreprocessDefineAggregateStmt`
+
+* Adds Stackoverflow badge into `README.md`
+
+* Adds Twitter, Packagecloud and CircleCI badges
 
 ### citus v10.2.5 (March 15, 2022) ###
 
