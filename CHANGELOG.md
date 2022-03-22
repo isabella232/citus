@@ -1,4 +1,4 @@
-### citus v11.0.0 (March 22, 2022) ###
+### citus v11.0.0_beta (March 22, 2022) ###
 
 * Turns MX on by default
 
