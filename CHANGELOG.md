@@ -106,8 +106,6 @@
 
 * Fixes a bug that prevents `DROP SCHEMA CASCADE`
 
-* Fixes a build error that happens when lz4 is not installed
-
 * Fixes a clog lookup failure that could occur when writing to a columnar table
 
 * Fixes a crash that occurs when the aggregate that cannot be pushed-down returns empty result from a worker
@@ -126,11 +124,9 @@
 
 * Fixes issue when compiling Citus from source with some compilers
 
-* Fixes issues on attach partition logic
+* Fixes issues on `ATTACH PARTITION` logic
 
 * Fixes naming issues of newly created partitioned indexes
-
-* Fixes the extra comma bug in `ShardListInsertCommand`
 
 * Implements `TEXT SEARCH CONFIGURATION` propagation
 
@@ -184,8 +180,6 @@
 
 * Refactor `GenerateGrantOnSchemaStmtForRights` to a more generic form
 
-* Refactors `CreateDistributedTable` to take column name
-
 * Reinstates optimisation for uniform shard interval ranges
 
 * Relaxes table ownership check to privileges check while acquiring lock
@@ -215,20 +209,6 @@
 * Stops updating shard range in `citus_update_shard_statistics` for append tables
 
 * Synchronizes `pg_dist_colocation` to worker nodes
-
-* Uses `smgrextend()` when extending relation, and WAL-log first
-
---------- I plan to delete all the entries below --------------
-
-* Adds missing version checks for columnar tables
-
-* Adds missing version checks for internal function
-
-* Qualifies `CREATE AGGREGATE` stmts in `Preprocess`, adds `PreprocessDefineAggregateStmt`
-
-* Adds Stackoverflow badge into `README.md`
-
-* Adds Twitter, Packagecloud and CircleCI badges
 
 ### citus v10.2.5 (March 15, 2022) ###
 
