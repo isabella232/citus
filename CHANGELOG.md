@@ -2,15 +2,18 @@
 
 * Turns MX on by default
 
-* Adds `citus_finalize_upgrade_to_citus11()` which is necessary to upgrade Citus 11+ from earlier versions
+* Adds `citus_finalize_upgrade_to_citus11()` which is necessary to upgrade to
+  Citus 11+ from earlier versions
 
 * Distributes functions with `CREATE FUNCTION` command
 
-* `citus_shard_indexes_on_worker` shows all local shard indexes regardless of `search_path`
+* `citus_shard_indexes_on_worker` shows all local shard indexes regardless of
+  `search_path`
 
 * `citus_shards_on_worker` shows all local shards regardless of `search_path`
 
-* Adds `citus.create_object_propagation` GUC to control ddl creation behaviour in transactions
+* Adds `citus.create_object_propagation` GUC to control ddl creation behaviour
+  in transactions
 
 * Sets `create_object_propagation` default to `immediate`
 
@@ -24,7 +27,8 @@
 
 * Starts internal backends by `application_name=citus_internal`
 
-* Adds `citus.enable_unsafe_triggers` flag to propagate triggers on distributed tables
+* Adds `citus.enable_unsafe_triggers` flag to propagate triggers on distributed
+  tables
 
 * Adds `citus.max_client_connections` GUC to limit non-Citus connections
 
@@ -86,19 +90,25 @@
 
 * Fixes a bug preventing issues while create dependencies from multiple sessions
 
-* Fixes a bug that causes reading columnar metapage as all-zeros under high write concurrency
+* Fixes a bug that causes reading columnar metapage as all-zeros under high
+  write concurrency
 
-* Fixes a bug that could break `DROP SCHEMA/EXTENSON` commands when there is a columnar table
+* Fixes a bug that could break `DROP SCHEMA/EXTENSON` commands when there is a
+  columnar table
 
-* Fixes a bug that could break pg upgrades due to missing `pg_depend` records for columnar table access method
+* Fixes a bug that could break pg upgrades due to missing `pg_depend` records
+  for columnar table access method
 
-* Fixes a bug that could cause `CREATE INDEX` to fail for expressions when using custom `search_path`
+* Fixes a bug that could cause `CREATE INDEX` to fail for expressions when using
+  custom `search_path`
 
-* Fixes a bug that could cause `worker_save_query_explain_analyze` to fail on custom types
+* Fixes a bug that could cause `worker_save_query_explain_analyze` to fail on
+  custom types
 
 * Fixes a bug that could cause failed re-partition joins to leak result tables
 
-* Fixes a bug that could cause prerequisite `columnarAM` objects being not created during pg upgrade
+* Fixes a bug that could cause prerequisite `columnarAM` objects being not
+  created during pg upgrade
 
 * Fixes a bug that could cause re-partition joins involving local shards to fail
 
@@ -108,17 +118,22 @@
 
 * Fixes a clog lookup failure that could occur when writing to a columnar table
 
-* Fixes a crash that occurs when the aggregate that cannot be pushed-down returns empty result from a worker
+* Fixes a crash that occurs when the aggregate that cannot be pushed-down
+  returns empty result from a worker
 
 * Fixes a missing `FROM` clause entry error
 
-* Fixes a possible segfault that could happen when reporting distributed deadlock
+* Fixes a possible segfault that could happen when reporting distributed
+  deadlock
 
-* Fixes an issue that could cause unexpected errors when there is an in-progress write to a columnar table
+* Fixes an issue that could cause unexpected errors when there is an in-progress
+  write to a columnar table
 
-* Fixes an unexpected error that occurs due to aborted writes to a columnar table with an index
+* Fixes an unexpected error that occurs due to aborted writes to a columnar
+  table with an index
 
-* Fixes an unexpected error that occurs when writing to a columnar table created in older version
+* Fixes an unexpected error that occurs when writing to a columnar table created
+  in older version
 
 * Fixes function signature generation bug
 
@@ -134,7 +149,8 @@
 
 * Improves concurrent metadata syncing and metadata changing DDL operations
 
-* Improves self-deadlock prevention for `CREATE INDEX / REINDEX CONCURRENTLY` commands for builds using PG14 or higher
+* Improves self-deadlock prevention for `CREATE INDEX / REINDEX CONCURRENTLY`
+  commands for builds using PG14 or higher
 
 * Introduces `citus_backend_gpid()`
 
@@ -148,7 +164,10 @@
 
 * Introduces `use_citus_managed_tables` GUC
 
-* Introduces a new flag `force_delegation` in `create_distributed_function()`, which will allow a function to be delegated in an explicit transaction block. Such delegated functions are restricted to use only the distributed argument value.
+* Introduces a new flag `force_delegation` in `create_distributed_function()`,
+  which will allow a function to be delegated in an explicit transaction block.
+  Such delegated functions are restricted to use only the distributed argument
+  value.
 
 * Introduces global pid
 
@@ -156,7 +175,8 @@
 
 * Moves `pg_dist_object` to `pg_catalog` schema
 
-* Overrides `pg_cancel_backend()` and `pg_terminate_backend()` to run with global pid
+* Overrides `pg_cancel_backend()` and `pg_terminate_backend()` to run with
+  global pid
 
 * Partitions shards to be co-located with the parent shards
 
@@ -164,7 +184,8 @@
 
 * Prevents creating distributed functions when there are out of sync nodes
 
-* Prevents failing over to local execution for DDLs that cannot be executed locally
+* Prevents failing over to local execution for DDLs that cannot be executed
+  locally
 
 * Propagates `CREATE SCHEMA .. GRANT ON SCHEMA ..` commands
 
@@ -194,9 +215,11 @@
 
 * Removes superuser requirement for metadata sync
 
-* Removes support for distributed `cstore_fdw` tables in favour of Citus columnar
+* Removes support for distributed `cstore_fdw` tables in favour of Citus
+  columnar
 
-* Removes support for dropping distributed and local indexes in the same statement
+* Removes support for dropping distributed and local indexes in the same
+  statement
 
 * Replaces `citus.enable_object_propagation` with `citus.enable_metadata_sync`
 
@@ -206,7 +229,8 @@
 
 * Starts erroring out for unsupported lateral subqueries
 
-* Stops updating shard range in `citus_update_shard_statistics` for append tables
+* Stops updating shard range in `citus_update_shard_statistics` for append
+  tables
 
 * Synchronizes `pg_dist_colocation` to worker nodes
 
@@ -226,13 +250,13 @@
 
 * Adds support for operator class parameters in indexes
 
-* Fixes a bug with distributed functions that have `OUT` parameters or
-  return `TABLE`
+* Fixes a bug with distributed functions that have `OUT` parameters or return
+  `TABLE`
 
 * Fixes a build error that happens when `lz4` is not installed
 
-* Improves self-deadlock prevention for `CREATE INDEX` &
-  `REINDEX CONCURRENTLY` commands for builds using PG14 or higher
+* Improves self-deadlock prevention for `CREATE INDEX` & `REINDEX CONCURRENTLY`
+  commands for builds using PG14 or higher
 
 * Fixes a bug that causes commands to fail when `application_name` is set
 
@@ -240,8 +264,8 @@
 
 * Adds missing version checks for columnar tables
 
-* Fixes a bug that could break `DROP SCHEMA/EXTENSION` commands when there is
-  a columnar table
+* Fixes a bug that could break `DROP SCHEMA/EXTENSION` commands when there is a
+  columnar table
 
 * Fixes a build error that happens when `lz4` is not installed
 
@@ -253,19 +277,19 @@
 
 ### citus v10.2.3 (November 29, 2021) ###
 
-* Adds `fix_partition_shard_index_names` udf to fix currently broken
-  partition index names
+* Adds `fix_partition_shard_index_names` udf to fix currently broken partition
+  index names
 
-* Fixes a bug that could break `DROP SCHEMA/EXTENSION` commands when there is
-  a columnar table
+* Fixes a bug that could break `DROP SCHEMA/EXTENSION` commands when there is a
+  columnar table
 
 * Fixes a bug that could break pg upgrades due to missing `pg_depend` records
   for columnar table access method
 
 * Fixes a missing `FROM` clause entry error
 
-* Fixes an unexpected error that occurs when writing to a columnar table
-  created in older versions
+* Fixes an unexpected error that occurs when writing to a columnar table created
+  in older versions
 
 * Fixes issue when compiling Citus from source with some compilers
 
@@ -299,8 +323,7 @@
 
 * Fixes a bug with local cached plans on tables with dropped columns
 
-* Fixes a crash in queries with a modifying `CTE` and a `SELECT`
-  without `FROM`
+* Fixes a crash in queries with a modifying `CTE` and a `SELECT` without `FROM`
 
 * Fixes a missing `FROM` clause entry error
 
@@ -328,14 +351,14 @@
 
 ### citus v10.2.2 (October 14, 2021) ###
 
-* Fixes a bug that causes reading columnar metapage as all-zeros when
-  writing to a columnar table
+* Fixes a bug that causes reading columnar metapage as all-zeros when writing to
+  a columnar table
 
-* Fixes a bug that could cause prerequisite columnar table access method
-  objects being not created during pg upgrades
+* Fixes a bug that could cause prerequisite columnar table access method objects
+  being not created during pg upgrades
 
-* Fixes a bug that could cause `CREATE INDEX` to fail for expressions when
-  using custom `search_path`
+* Fixes a bug that could cause `CREATE INDEX` to fail for expressions when using
+  custom `search_path`
 
 * Fixes an unexpected error that occurs due to aborted writes to a columnar
   table with an index
@@ -346,16 +369,16 @@
 
 * Adds missing version-mismatch checks for internal functions
 
-* Fixes a bug that could cause partition shards being not co-located with
-  parent shards
+* Fixes a bug that could cause partition shards being not co-located with parent
+  shards
 
-* Fixes a bug that prevents pushing down boolean expressions when using
-  columnar custom scan
+* Fixes a bug that prevents pushing down boolean expressions when using columnar
+  custom scan
 
 * Fixes a clog lookup failure that could occur when writing to a columnar table
 
-* Fixes an issue that could cause unexpected errors when there is an
-  in-progress write to a columnar table
+* Fixes an issue that could cause unexpected errors when there is an in-progress
+  write to a columnar table
 
 * Revokes read access to `columnar.chunk` from unprivileged user
 
@@ -425,8 +448,8 @@
 
 * Fixes a bug about int and smallint sequences on MX
 
-* Fixes a bug that cause partitions to have wrong distribution key after
-  DROP COLUMN
+* Fixes a bug that cause partitions to have wrong distribution key after DROP
+  COLUMN
 
 * Fixes a bug that caused `worker_append_table_to_shard` to write as superuser
 
@@ -456,15 +479,15 @@
 
 * Allows more graceful failovers when replication factor > 1
 
-* Fixes a bug that causes partitions to have wrong distribution key after
-  `DROP COLUMN`
+* Fixes a bug that causes partitions to have wrong distribution key after `DROP
+  COLUMN`
 
 ### citus v10.0.5 (August 16, 2021) ###
 
 * Allows more graceful failovers when replication factor > 1
 
-* Fixes a bug that causes partitions to have wrong distribution key after
-  `DROP COLUMN`
+* Fixes a bug that causes partitions to have wrong distribution key after `DROP
+  COLUMN`
 
 * Improves citus_update_table_statistics and provides distributed deadlock
   detection
@@ -473,8 +496,8 @@
 
 * Allows more graceful failovers when replication factor > 1
 
-* Fixes a bug that causes partitions to have wrong distribution key after
-  `DROP COLUMN`
+* Fixes a bug that causes partitions to have wrong distribution key after `DROP
+  COLUMN`
 
 * Improves master_update_table_statistics and provides distributed deadlock
   detection
