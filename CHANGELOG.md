@@ -13,11 +13,6 @@
 
 * Distributes functions with `CREATE FUNCTION` command
 
-* `citus_shard_indexes_on_worker` shows all local shard indexes regardless of
-  `search_path`
-
-* `citus_shards_on_worker` shows all local shards regardless of `search_path`
-
 * Adds `citus.create_object_propagation` GUC to control DDL creation behaviour
   in transactions
 
@@ -64,14 +59,24 @@
 
 * Delegates function calls of the form `SELECT .. FROM func()`
 
-* Deprecates `master_get_table_metadata` UDF
+* `citus_shard_indexes_on_worker` shows all local shard indexes regardless of
+  `search_path`
+
+* `citus_shards_on_worker` shows all local shards regardless of `search_path`
 
 * Deprecates inactive shard state, never marks any placement inactive
 
+* Disables distributed & reference foreign tables
+
+* Prevents propagating objects having a circular dependency
+
+* Prevents propagating objects having a dependency to an object with unsupported
+  type
+
+* Deprecates `master_get_table_metadata` UDF
+
 * Allows users to add local tables to metadata using
   `citus_add_local_table_to_metadata()` UDF
-
-* Disables distributed & reference foreign tables
 
 * Disallows remote execution from queries on shards
 
@@ -80,11 +85,6 @@
 * Drops `citus.single_shard_commit_protocol` GUC, defaults to 2PC
 
 * Drops support for `citus.multi_shard_commit_protocol`, always use 2PC
-
-* Prevents propagating objects having a circular dependency
-
-* Prevents propagating objects having a dependency to an object with unsupported
-  type
 
 * Avoids unnecessary errors for `ALTER STATISTICS IF EXISTS` when the statistics
   does not exist
