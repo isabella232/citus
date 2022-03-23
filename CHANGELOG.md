@@ -1,9 +1,15 @@
 ### citus v11.0.0_beta (March 22, 2022) ###
 
-* Turns MX on by default
+* Turns metadata syncing on by default
 
 * Adds `citus_finalize_upgrade_to_citus11()` which is necessary to upgrade to
   Citus 11+ from earlier versions
+
+* Adds `citus.max_client_connections` GUC to limit non-Citus connections
+
+* Allows locally creating objects having a dependency that cannot be distributed
+
+* Distributes aggregates with `CREATE AGGREGATE` command
 
 * Distributes functions with `CREATE FUNCTION` command
 
@@ -15,10 +21,6 @@
 * Adds `citus.create_object_propagation` GUC to control DDL creation behaviour
   in transactions
 
-* Sets `create_object_propagation` default to `immediate`
-
-* Uses a fixed `application_name` while connecting to remote nodes
-
 * Hides shards based on `application_name` prefix
 
 * Prevents specifying `application_name` via `citus.node_conninfo`
@@ -27,10 +29,8 @@
 
 * Starts identifying internal backends by `application_name=citus_internal`
 
-* Adds `citus.enable_unsafe_triggers` flag to propagate triggers on distributed
-  tables
-
-* Adds `citus.max_client_connections` GUC to limit non-Citus connections
+* Adds `citus.enable_unsafe_triggers` flag to enable unsafe triggers on
+  distributed tables
 
 * Adds `fix_partition_shard_index_names` UDF to fix currently broken names
 
@@ -58,8 +58,6 @@
 
 * Allows disabling nodes when multiple failures happen
 
-* Creates type locally if it has undistributable dependency
-
 * Delegates function calls of the form `SELECT .. FROM func()`
 
 * Deprecates `master_get_table_metadata` UDF
@@ -71,8 +69,6 @@
 * Disables distributed & reference foreign tables
 
 * Disallows remote execution from queries on shards
-
-* Drops `citus_worker_stat_activity`
 
 * Drops `citus.enable_cte_inlining` GUC
 
@@ -88,14 +84,15 @@
 
 * Prevents propagating objects having a circular dependency
 
-* Errors out if object has dependency to an object with unsupported type
+* Prevents propagating objects having a dependency to an object with unsupported
+  type
 
 * Fixes `ALTER STATISTICS IF EXISTS` bug
 
 * Fixes a bug that causes issues while create dependencies from multiple sessions
 
-* Fixes a bug that causes reading columnar metapage as all-zeros under high
-  write concurrency
+* Fixes a bug that causes reading columnar metapage as all-zeros when
+  writing to a columnar table
 
 * Fixes a bug that could break `DROP SCHEMA/EXTENSON` commands when there is a
   columnar table
@@ -139,7 +136,7 @@
 * Fixes an unexpected error that occurs when writing to a columnar table created
   in older version
 
-* Fixes function signature generation bug
+* Improves handling of `IN`, `OUT` and `INOUT` parameters for functions
 
 * Fixes issue when compiling Citus from source with some compilers
 
@@ -166,16 +163,10 @@
 
 * Introduces `citus_stat_activity` view
 
-* Introduces `use_citus_managed_tables` GUC
+* Introduces `citus.use_citus_managed_tables` GUC to add local tables to Citus
+  metadata automatically
 
-* Introduces a new flag `force_delegation` in `create_distributed_function()`,
-  which will allow a function to be delegated in an explicit transaction block.
-  Such delegated functions are restricted to use only the distributed argument
-  value.
-
-* Introduces global pid
-
-* Introduces helper functions for global pid
+* Introduces a new flag `force_delegation` in `create_distributed_function()`
 
 * Moves `pg_dist_object` to `pg_catalog` schema
 
@@ -188,22 +179,15 @@
 
 * Prevents creating distributed functions when there are out of sync nodes
 
-* Prevents failing over to local execution for DDLs that cannot be executed
-  locally
-
 * Adds propagation of `CREATE SCHEMA .. GRANT ON SCHEMA ..` commands
 
 * Propagates `pg_dist_object` to worker nodes
 
 * Adds propagation of `SCHEMA` operations
 
-* Propagates tables and sequences like other objects to remote nodes
-
 * Provides notice message for idempotent `create_distributed_function` calls
 
 * Adds support for pushing procedures with `OUT` arguments down to the worker nodes
-
-* Refactor `GenerateGrantOnSchemaStmtForRights` to a more generic form
 
 * Reinstates optimisation for uniform shard interval ranges
 
@@ -216,8 +200,6 @@
 * Drops `master_apply_delete_command` UDF
 
 * Removes copy into new shard logic for append-distributed tables
-
-* Removes superuser requirement for metadata sync
 
 * Drops support for distributed `cstore_fdw` tables in favor of Citus
   columnar table access method
@@ -235,8 +217,6 @@
 
 * Stops updating shard range in `citus_update_shard_statistics` for append
   tables
-
-* Synchronizes `pg_dist_colocation` to worker nodes
 
 ### citus v10.2.5 (March 15, 2022) ###
 
