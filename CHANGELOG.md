@@ -12,7 +12,7 @@
 
 * `citus_shards_on_worker` shows all local shards regardless of `search_path`
 
-* Adds `citus.create_object_propagation` GUC to control ddl creation behaviour
+* Adds `citus.create_object_propagation` GUC to control DDL creation behaviour
   in transactions
 
 * Sets `create_object_propagation` default to `immediate`
@@ -21,18 +21,18 @@
 
 * Hides shards based on `application_name` prefix
 
-* Prevents `citus.node_conninfo` to use `application_name`
+* Prevents specifying `application_name` via `citus.node_conninfo`
 
 * Starts identifying rebalancer backends by `application_name=citus_rebalancer`
 
-* Starts internal backends by `application_name=citus_internal`
+* Starts identifying internal backends by `application_name=citus_internal`
 
 * Adds `citus.enable_unsafe_triggers` flag to propagate triggers on distributed
   tables
 
 * Adds `citus.max_client_connections` GUC to limit non-Citus connections
 
-* Adds `fix_partition_shard_index_names` udf to fix currently broken names
+* Adds `fix_partition_shard_index_names` UDF to fix currently broken names
 
 * Adds propagation for foreign server commands
 
@@ -44,7 +44,7 @@
 
 * Adds support for `TRUNCATE` for foreign tables
 
-* Adds support for adding partitioned local table to Citus metadata
+* Adds support for adding partitioned local tables to Citus metadata
 
 * Adds support for automatic binary encoding in re-partition joins when possible
 
@@ -64,7 +64,7 @@
 
 * Deprecates `master_get_table_metadata` UDF
 
-* Deprecates Inactive shard state, never marks any placement inactive
+* Deprecates inactive shard state, never marks any placement inactive
 
 * Disables auto-undistributing for local tables added by the user
 
@@ -86,13 +86,13 @@
 
 * Enables shard replication > 1 hash distributed tables on Citus MX
 
-* Errors out if object has circular dependency
+* Prevents propagating objects having a circular dependency
 
 * Errors out if object has dependency to an object with unsupported type
 
 * Fixes `ALTER STATISTICS IF EXISTS` bug
 
-* Fixes a bug preventing issues while create dependencies from multiple sessions
+* Fixes a bug that causes issues while create dependencies from multiple sessions
 
 * Fixes a bug that causes reading columnar metapage as all-zeros under high
   write concurrency
@@ -111,8 +111,8 @@
 
 * Fixes a bug that could cause failed re-partition joins to leak result tables
 
-* Fixes a bug that could cause prerequisite `columnarAM` objects being not
-  created during pg upgrade
+* Fixes a bug that could cause prerequisite columnar table access method
+  objects being not created during pg upgrades
 
 * Fixes a bug that could cause re-partition joins involving local shards to fail
 
@@ -147,9 +147,9 @@
 
 * Fixes naming issues of newly created partitioned indexes
 
-* Implements `TEXT SEARCH CONFIGURATION` propagation
+* Adds propagation of `TEXT SEARCH CONFIGURATION` objects
 
-* Implements `TEXT SEARCH DICTIONARY` propagation
+* Adds propagation of `TEXT SEARCH DICTIONARY` objects
 
 * Improves concurrent metadata syncing and metadata changing DDL operations
 
@@ -191,17 +191,17 @@
 * Prevents failing over to local execution for DDLs that cannot be executed
   locally
 
-* Propagates `CREATE SCHEMA .. GRANT ON SCHEMA ..` commands
+* Adds propagation of `CREATE SCHEMA .. GRANT ON SCHEMA ..` commands
 
 * Propagates `pg_dist_object` to worker nodes
 
-* Propagates schema operations
+* Adds propagation of `SCHEMA` operations
 
 * Propagates tables and sequences like other objects to remote nodes
 
 * Provides notice message for idempotent `create_distributed_function` calls
 
-* Pushes down procedures with OUT arguments to the worker nodes
+* Adds support for pushing procedures with `OUT` arguments down to the worker nodes
 
 * Refactor `GenerateGrantOnSchemaStmtForRights` to a more generic form
 
@@ -209,29 +209,29 @@
 
 * Relaxes table ownership check to privileges check while acquiring lock
 
-* Removes `citus.shard_placement_policy`
+* Drops support for `citus.shard_placement_policy` GUC
 
-* Removes `master_append_table_to_shard`
+* Drops `master_append_table_to_shard` UDF
 
-* Removes `master_apply_delete_command`
+* Drops `master_apply_delete_command` UDF
 
 * Removes copy into new shard logic for append-distributed tables
 
 * Removes superuser requirement for metadata sync
 
-* Removes support for distributed `cstore_fdw` tables in favour of Citus
-  columnar
+* Drops support for distributed `cstore_fdw` tables in favor of Citus
+  columnar table access method
 
 * Removes support for dropping distributed and local indexes in the same
   statement
 
-* Replaces `citus.enable_object_propagation` with `citus.enable_metadata_sync`
+* Replaces `citus.enable_object_propagation` GUC with `citus.enable_metadata_sync`
 
-* Requires superuser for `citus_add_node()` and `citus_activate_node()`
+* Requires superuser for `citus_add_node()` and `citus_activate_node()` UDFs
 
 * Revokes read access to `columnar.chunk` from unprivileged user
 
-* Starts erroring out for unsupported lateral subqueries
+* Disallows unsupported lateral subqueries on distributed tables
 
 * Stops updating shard range in `citus_update_shard_statistics` for append
   tables
