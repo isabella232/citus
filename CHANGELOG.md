@@ -52,6 +52,12 @@
 
 * Adds support for operator class parameters in indexes
 
+* Adds support for re-partition joins in transaction blocks
+
+* Adds support for re-partition joins on followers
+
+* Adds support for shard replication > 1 hash distributed tables on Citus MX
+
 * Allows `create_distributed_function()` on a function owned by an extension
 
 * Allows creating distributed tables in sequential mode
@@ -76,18 +82,13 @@
 
 * Drops support for `citus.multi_shard_commit_protocol`, always use 2PC
 
-* Enables re-partition joins in transaction blocks
-
-* Enables re-partition joins on followers
-
-* Enables shard replication > 1 hash distributed tables on Citus MX
-
 * Prevents propagating objects having a circular dependency
 
 * Prevents propagating objects having a dependency to an object with unsupported
   type
 
-* Fixes `ALTER STATISTICS IF EXISTS` bug
+* Avoids unnecessary errors for `ALTER STATISTICS IF EXISTS` when the statistics
+  does not exist
 
 * Fixes a bug that causes issues while create dependencies from multiple sessions
 
@@ -161,7 +162,8 @@
 
 * Introduces `citus_coordinator_nodeid` UDF
 
-* Introduces `citus_stat_activity` view
+* Introduces `citus_stat_activity` view and drops `citus_worker_stat_activity`
+  UDF
 
 * Introduces `citus.use_citus_managed_tables` GUC to add local tables to Citus
   metadata automatically
