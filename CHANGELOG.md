@@ -36,9 +36,7 @@
 
 * Adds propagation for foreign server commands
 
-* Adds propagation of `CREATE AGGREGATE` commands
-
-* Add support for `ALTER FUNCTION ... SUPPORT ...` commands
+* Adds support for `ALTER FUNCTION ... SUPPORT ...` commands
 
 * Adds support for `CREATE SCHEMA AUTHORIZATION` statements without schema name
 
@@ -70,7 +68,8 @@
 
 * Deprecates inactive shard state, never marks any placement inactive
 
-* Disables auto-undistributing for local tables added by the user
+* Allows users to add local tables to metadata using
+  `citus_add_local_table_to_metadata()` UDF
 
 * Disables distributed & reference foreign tables
 
@@ -154,13 +153,14 @@
 * Improves self-deadlock prevention for `CREATE INDEX / REINDEX CONCURRENTLY`
   commands for builds using PG14 or higher
 
-* Introduces `citus_backend_gpid()`
+* Introduces `citus_backend_gpid()` UDF to get global pid of the current backend
 
 * Introduces `citus_check_cluster_node_health` UDF to check cluster connectivity
 
 * Introduces `citus_check_connection_to_node` UDF to check node connectivity
 
-* Introduces `citus_coordinator_nodeid` UDF
+* Introduces `citus_coordinator_nodeid` UDF to find the node id of the
+  coordinator node
 
 * Introduces `citus_stat_activity` view and drops `citus_worker_stat_activity`
   UDF
