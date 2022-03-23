@@ -1,5 +1,7 @@
 ### citus v11.0.0_beta (March 22, 2022) ###
 
+* Drops support for PostgreSQL 12
+
 * Turns metadata syncing on by default
 
 * Adds `citus_finalize_upgrade_to_citus11()` which is necessary to upgrade to
@@ -30,6 +32,10 @@
 * Adds `fix_partition_shard_index_names` UDF to fix currently broken names
 
 * Adds propagation for foreign server commands
+
+* Adds missing version-mismatch checks for columnar tables
+
+* Adds missing version-mismatch checks for internal functions
 
 * Adds support for `ALTER FUNCTION ... SUPPORT ...` commands
 
@@ -89,6 +95,8 @@
 * Avoids unnecessary errors for `ALTER STATISTICS IF EXISTS` when the statistics
   does not exist
 
+* Fixes a bug that causes columnar storage pages to have zero LSN
+
 * Fixes a bug that causes issues while create dependencies from multiple sessions
 
 * Fixes a bug that causes reading columnar metapage as all-zeros when
@@ -116,6 +124,8 @@
 * Fixes a bug that limits usage of sequences in non-int columns
 
 * Fixes a bug that prevents `DROP SCHEMA CASCADE`
+
+* Fixes a build error that happens when `lz4` is not installed
 
 * Fixes a clog lookup failure that could occur when writing to a columnar table
 
