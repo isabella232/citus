@@ -95,6 +95,12 @@
 
 * Delegates function calls of the form `SELECT .. FROM func()`
 
+* Adds propagation of `CREATE SCHEMA .. GRANT ON SCHEMA ..` commands
+
+* Propagates `pg_dist_object` to worker nodes
+
+* Adds propagation of `SCHEMA` operations
+
 * `citus_shard_indexes_on_worker` shows all local shard indexes regardless of
   `search_path`
 
@@ -194,12 +200,6 @@
 * Prevents Citus table functions from being called on shards
 
 * Prevents creating distributed functions when there are out of sync nodes
-
-* Adds propagation of `CREATE SCHEMA .. GRANT ON SCHEMA ..` commands
-
-* Propagates `pg_dist_object` to worker nodes
-
-* Adds propagation of `SCHEMA` operations
 
 * Provides notice message for idempotent `create_distributed_function` calls
 
