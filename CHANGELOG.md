@@ -97,7 +97,8 @@
 
 * Fixes a bug that causes columnar storage pages to have zero LSN
 
-* Fixes a bug that causes issues while create dependencies from multiple sessions
+* Fixes a bug that causes issues while create dependencies from multiple
+  sessions
 
 * Fixes a bug that causes reading columnar metapage as all-zeros when
   writing to a columnar table
@@ -199,7 +200,8 @@
 
 * Provides notice message for idempotent `create_distributed_function` calls
 
-* Adds support for pushing procedures with `OUT` arguments down to the worker nodes
+* Adds support for pushing procedures with `OUT` arguments down to the worker
+  nodes
 
 * Reinstates optimisation for uniform shard interval ranges
 
@@ -219,7 +221,8 @@
 * Removes support for dropping distributed and local indexes in the same
   statement
 
-* Replaces `citus.enable_object_propagation` GUC with `citus.enable_metadata_sync`
+* Replaces `citus.enable_object_propagation` GUC with
+  `citus.enable_metadata_sync`
 
 * Requires superuser for `citus_add_node()` and `citus_activate_node()` UDFs
 
