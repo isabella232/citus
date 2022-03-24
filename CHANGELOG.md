@@ -57,11 +57,41 @@
 
 * Adds support for shard replication > 1 hash distributed tables on Citus MX
 
+* Introduces `citus_backend_gpid()` UDF to get global pid of the current backend
+
+* Introduces `citus_check_cluster_node_health` UDF to check cluster connectivity
+
+* Introduces `citus_check_connection_to_node` UDF to check node connectivity
+
+* Introduces `citus_coordinator_nodeid` UDF to find the node id of the
+  coordinator node
+
+* Introduces `citus_stat_activity` view and drops `citus_worker_stat_activity`
+  UDF
+
+* Introduces `citus.use_citus_managed_tables` GUC to add local tables to Citus
+  metadata automatically
+
+* Introduces a new flag `force_delegation` in `create_distributed_function()`
+
 * Allows `create_distributed_function()` on a function owned by an extension
 
 * Allows creating distributed tables in sequential mode
 
 * Allows disabling nodes when multiple failures happen
+
+* Allows users to add local tables to metadata using
+  `citus_add_local_table_to_metadata()` UDF
+
+* Adds support for pushing procedures with `OUT` arguments down to the worker
+  nodes
+
+* Overrides `pg_cancel_backend()` and `pg_terminate_backend()` to run with
+  global pid
+
+* Adds propagation of `TEXT SEARCH CONFIGURATION` objects
+
+* Adds propagation of `TEXT SEARCH DICTIONARY` objects
 
 * Delegates function calls of the form `SELECT .. FROM func()`
 
@@ -80,9 +110,6 @@
   type
 
 * Deprecates `master_get_table_metadata` UDF
-
-* Allows users to add local tables to metadata using
-  `citus_add_local_table_to_metadata()` UDF
 
 * Disallows remote execution from queries on shards
 
@@ -155,36 +182,12 @@
 
 * Fixes naming issues of newly created partitioned indexes
 
-* Adds propagation of `TEXT SEARCH CONFIGURATION` objects
-
-* Adds propagation of `TEXT SEARCH DICTIONARY` objects
-
 * Improves concurrent metadata syncing and metadata changing DDL operations
 
 * Improves self-deadlock prevention for `CREATE INDEX / REINDEX CONCURRENTLY`
   commands for builds using PG14 or higher
 
-* Introduces `citus_backend_gpid()` UDF to get global pid of the current backend
-
-* Introduces `citus_check_cluster_node_health` UDF to check cluster connectivity
-
-* Introduces `citus_check_connection_to_node` UDF to check node connectivity
-
-* Introduces `citus_coordinator_nodeid` UDF to find the node id of the
-  coordinator node
-
-* Introduces `citus_stat_activity` view and drops `citus_worker_stat_activity`
-  UDF
-
-* Introduces `citus.use_citus_managed_tables` GUC to add local tables to Citus
-  metadata automatically
-
-* Introduces a new flag `force_delegation` in `create_distributed_function()`
-
 * Moves `pg_dist_object` to `pg_catalog` schema
-
-* Overrides `pg_cancel_backend()` and `pg_terminate_backend()` to run with
-  global pid
 
 * Partitions shards to be co-located with the parent shards
 
@@ -199,9 +202,6 @@
 * Adds propagation of `SCHEMA` operations
 
 * Provides notice message for idempotent `create_distributed_function` calls
-
-* Adds support for pushing procedures with `OUT` arguments down to the worker
-  nodes
 
 * Reinstates optimisation for uniform shard interval ranges
 
